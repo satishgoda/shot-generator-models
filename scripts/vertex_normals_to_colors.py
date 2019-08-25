@@ -19,7 +19,13 @@ ao = bpy.context.active_object
 aodata = ao.data
 
 # Get the active vertex color (Add it from the UI first)
-color_layer = aodata.vertex_colors.active
+# color_layer = aodata.vertex_colors.active
+if not 'vertex_normals' in aodata.vertex_colors:
+    aodata.vertex_colors.new(name='vertex_normals')
+
+color_layer = aodata.vertex_colors['vertex_normals']
+color_layer.active = True
+color_layer.active_render = True
 
 i = 0
 for poly in aodata.polygons:
