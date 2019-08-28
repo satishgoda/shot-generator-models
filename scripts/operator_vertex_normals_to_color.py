@@ -1,5 +1,7 @@
 import bpy
 from mathutils import Color
+from bpy.types import Panel
+from bl_ui.properties_workspace import WorkSpaceButtonsPanel
 
 
 # https://gist.github.com/Kodagrux/5b39358d812c0fd8eaf4
@@ -61,13 +63,30 @@ class VertexNormalToVertexColorsOperator(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class WORKSPACE_PT_test_operator(WorkSpaceButtonsPanel, Panel):
+    bl_label = "Test Operator Development"
+    
+    def draw(self, context):
+        layout = self.layout
+        layout.alert = True
+        layout.operator("object.bake_vertex_normal_to_color")
+
+
+classes = (
+    WORKSPACE_PT_test_operator,
+)
+
 def register():
     bpy.utils.register_class(VertexNormalToVertexColorsOperator)
+    for cls in classes:
+        bpy.utils.register_class(cls)
 
 
 def unregister():
     bpy.utils.unregister_class(VertexNormalToVertexColorsOperator)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # only for live edit.
     register()
