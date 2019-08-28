@@ -32,6 +32,10 @@ class VertexNormalToVertexColorsOperator(bpy.types.Operator):
     """Convert vertex normals to vertex colors"""
     bl_idname = "object.bake_vertex_normal_to_color"
     bl_label = "Bake Vertex Normal To Color"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    remap_colors: bpy.props.BoolProperty(name="Remap Colors",
+                                         default=True)
 
     @classmethod
     def poll(cls, context):
@@ -54,7 +58,7 @@ class VertexNormalToVertexColorsOperator(bpy.types.Operator):
             for vertex_index in polygon.vertices:
                 normal = mesh.vertices[vertex_index].normal
         
-                color = get_color_for_normal(normal, remap=True)
+                color = get_color_for_normal(normal, remap=self.remap_colors)
                 r, g, b = color
                 
                 color_layer.data[i].color = (r, g, b, 1.0)
